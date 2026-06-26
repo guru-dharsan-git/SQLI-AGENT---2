@@ -3,12 +3,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
 
-from agent.report import (
+from agent.evidence import (
     capability_summary,
-    has_login_bypass_signal,
-    has_read_marker_signal,
-    has_sql_error_signal,
+    evidence_text,
     normalize_attempt_signals,
+    signal_name,
 )
 
 
@@ -20,45 +19,6 @@ DEFAULT_SUMMARY_FILE = "sqli_vulnerable_payloads.json"
 
 def load_json(file_path):
     return json.loads(Path(file_path).read_text(encoding="utf-8"))
-
-
-def signal_name(attempt):
-    if has_read_marker_signal(attempt):
-        return "constant_read_confirmation"
-
-    if attempt.get("payload_phase") == "read_confirmation":
-        return ""
-
-    if has_login_bypass_signal(attempt):
-        return "authentication_bypass"
-
-    if has_sql_error_signal(attempt):
-        return "sql_error"
-
-    return ""
-
-
-def evidence_text(attempt):
-    signal = signal_name(attempt)
-    probe = attempt.get("probe") or {}
-    body = probe.get("body_sample", "")
-
-    if signal == "authentication_bypass":
-        return "Baseline returned 401, probe returned 200 with authentication data."
-
-    if signal == "constant_read_confirmation":
-        marker = (attempt.get("response_signal") or {}).get("read_marker", "")
-        return f"Probe response reflected non-sensitive SQL marker `{marker}`."
-
-    if "SQLITE_ERROR" in body:
-        title_start = body.find("Error:")
-
-        if title_start != -1:
-            return body[title_start: title_start + 140].replace("\n", " ")
-
-        return "Probe response exposed SQLITE_ERROR."
-
-    return "Probe response changed in a SQLi-relevant way."
 
 
 def confirmed_payloads(agent_results):

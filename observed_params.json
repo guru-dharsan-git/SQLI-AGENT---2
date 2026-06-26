@@ -1,4 +1,173 @@
 {
+  "GET /api/Products/1": {
+    "method": "GET",
+    "path": "/api/Products/1",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/1 OR 1=1 --": {
+    "method": "GET",
+    "path": "/api/Products/1 OR 1=1 --",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/24": {
+    "method": "GET",
+    "path": "/api/Products/24",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/1=1": {
+    "method": "GET",
+    "path": "/api/Products/1=1",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42": {
+    "method": "GET",
+    "path": "/api/Products/42",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 6
+  },
+  "GET /api/Products/1=1 /*": {
+    "method": "GET",
+    "path": "/api/Products/1=1 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42=42 /*": {
+    "method": "GET",
+    "path": "/api/Products/42=42 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42=43 /*": {
+    "method": "GET",
+    "path": "/api/Products/42=43 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42=44 /*": {
+    "method": "GET",
+    "path": "/api/Products/42=44 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42=45 /*": {
+    "method": "GET",
+    "path": "/api/Products/42=45 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/42=46 /*": {
+    "method": "GET",
+    "path": "/api/Products/42=46 /*",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/6": {
+    "method": "GET",
+    "path": "/api/Products/6",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
+  "GET /api/Products/123' OR 1=1 --": {
+    "method": "GET",
+    "path": "/api/Products/123' OR 1=1 --",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 1
+  },
   "GET /rest/products/search": {
     "method": "GET",
     "path": "/rest/products/search",
@@ -11,25 +180,6 @@
     "important_headers": [],
     "example_query_params": {
       "q": [
-        "agent_baseline"
-      ]
-    },
-    "example_form_params": {},
-    "example_json_body": null,
-    "seen_count": 251
-  },
-  "GET /rest/user/change-password": {
-    "method": "GET",
-    "path": "/rest/user/change-password",
-    "query_params": [
-      "current"
-    ],
-    "form_params": [],
-    "json_body_fields": [],
-    "cookie_params": [],
-    "important_headers": [],
-    "example_query_params": {
-      "current": [
         "agent_baseline"
       ]
     },
@@ -54,28 +204,9 @@
     "example_form_params": {},
     "example_json_body": {
       "email": "agent_baseline",
-      "password": "agent_baseline"
+      "password": "[REDACTED]"
     },
-    "seen_count": 54
-  },
-  "GET /rest/user/security-question": {
-    "method": "GET",
-    "path": "/rest/user/security-question",
-    "query_params": [
-      "email"
-    ],
-    "form_params": [],
-    "json_body_fields": [],
-    "cookie_params": [],
-    "important_headers": [],
-    "example_query_params": {
-      "email": [
-        "agent_baseline"
-      ]
-    },
-    "example_form_params": {},
-    "example_json_body": null,
-    "seen_count": 46
+    "seen_count": 2
   },
   "GET /rest/user/whoami": {
     "method": "GET",
@@ -94,25 +225,6 @@
     },
     "example_form_params": {},
     "example_json_body": null,
-    "seen_count": 32
-  },
-  "GET /api/Challenges": {
-    "method": "GET",
-    "path": "/api/Challenges",
-    "query_params": [
-      "key"
-    ],
-    "form_params": [],
-    "json_body_fields": [],
-    "cookie_params": [],
-    "important_headers": [],
-    "example_query_params": {
-      "key": [
-        "agent_baseline"
-      ]
-    },
-    "example_form_params": {},
-    "example_json_body": null,
-    "seen_count": 34
+    "seen_count": 4
   }
 }

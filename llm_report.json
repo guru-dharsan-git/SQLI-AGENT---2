@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-25T17:38:46.458584+00:00",
+  "generated_at": "2026-06-26T06:12:05.696023+00:00",
   "scan_results_file": "scan_results.json",
   "agent_results_file": "agent_results.json",
   "report_input_summary": {
-    "scan_target_count": 6,
-    "agent_target_count": 6,
+    "scan_target_count": 10,
+    "agent_target_count": 10,
     "input_mode": "compacted_scan_and_probe_evidence"
   },
   "report": {
@@ -20,8 +20,8 @@
         "endpoint_type": "search",
         "attack_style": "string_search_error_probe",
         "parameter": "q",
-        "payload": " OR 'a'='a",
-        "evidence": "Probe response exposed SQLITE_ERROR.",
+        "payload": " OR '1'='1",
+        "evidence": "Error: SQLITE_ERROR: near &quot;1&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
         "recommendation": "Use parameterized queries, avoid string-built SQL, and validate inputs server-side."
       },
       {
@@ -33,8 +33,8 @@
         "endpoint_type": "auth_login",
         "attack_style": "auth_boolean_bypass",
         "parameter": "email",
-        "payload": "' OR '' = '' --",
-        "evidence": "Baseline login failed with 401, while probe returned 200 with authentication data.",
+        "payload": "' OR 1=1 --",
+        "evidence": "Baseline returned 401, probe returned 200 with authentication data.",
         "recommendation": "Use parameterized queries, avoid string-built SQL, and validate inputs server-side."
       }
     ],
@@ -43,13 +43,85 @@
         "method": "GET",
         "path": "/api/Challenges",
         "parameter": "key",
-        "reason": "Probe response did not expose a SQL parser/database error."
+        "reason": "endpoint appears to serve metadata"
+      },
+      {
+        "method": "GET",
+        "path": "/api/Challenges",
+        "parameter": "name",
+        "reason": "endpoint appears to serve metadata"
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/1",
+        "parameter": "d",
+        "reason": "Skipped by suitability gate: parameter 'd' is a query parameter and does not fit the route purpose and recommended attack style."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/24",
+        "parameter": "d",
+        "reason": "Skipped by suitability gate: The parameter 'd' is a query parameter and the endpoint_context recommends avoiding union_enum and auth_bypass payload styles."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/42",
+        "parameter": "d",
+        "reason": "Skipped by suitability gate: parameter 'd' is a query parameter and does not plausibly influence a database query, lookup, search, or authentication check"
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/6",
+        "parameter": "d",
+        "reason": "Skipped by suitability gate: The parameter 'd' is a query parameter and the recommended attack style is 'numeric_identifier_probe' for product detail endpoints."
+      },
+      {
+        "method": "GET",
+        "path": "/rest/user/change-password",
+        "parameter": "current",
+        "reason": "Endpoint type is sensitive_write and recommended_attack_style is skip_low_value."
+      },
+      {
+        "method": "GET",
+        "path": "/rest/user/security-question",
+        "parameter": "email",
+        "reason": "Endpoint is used to retrieve security question and likely uses authentication lookup, but recommended_attack_style is auth_boolean_bypass which suggests probing is not recommended."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/1",
+        "parameter": "product_id",
+        "reason": "No SQL error, auth bypass, timing, content-type, or meaningful body change."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/24",
+        "parameter": "product_id",
+        "reason": "Enough evidence was gathered, no useful signal remains, or endpoint is not suitable."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/42",
+        "parameter": "product_id",
+        "reason": "Max attempts reached."
+      },
+      {
+        "method": "GET",
+        "path": "/api/Products/6",
+        "parameter": "product_id",
+        "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change."
+      },
+      {
+        "method": "POST",
+        "path": "/rest/user/login",
+        "parameter": "password",
+        "reason": "Skipped by suitability gate: Skipped password field because an identity field is available for authentication-query testing."
       },
       {
         "method": "GET",
         "path": "/rest/user/whoami",
         "parameter": "fields",
-        "reason": "Probe response did not expose a SQL parser/database error."
+        "reason": "Stopped because the response matched baseline closely; there was no useful error or behavior signal to adapt from."
       }
     ],
     "report_generation": {
@@ -57,7 +129,8 @@
       "provider": "nvidia",
       "model": "meta/llama-3.1-8b-instruct",
       "input": "compacted_scan_and_probe_evidence",
-      "evidence_filter": "Removed 2 unsupported finding(s) that lacked local probe evidence."
+      "post_processed": "Added locally confirmed findings omitted by the LLM response.",
+      "not_decidable_post_processed": "Added locally tested targets that did not have confirmed evidence."
     },
     "capability_summary": {
       "confirmed_surface_count": 2,
@@ -75,47 +148,7 @@
           "parameter": "q",
           "endpoint_type": "search",
           "technique": "error_based_sqli",
-          "payload": " OR 'a'='a"
-        },
-        {
-          "method": "GET",
-          "path": "/rest/products/search",
-          "parameter": "q",
-          "endpoint_type": "search",
-          "technique": "error_based_sqli",
-          "payload": " OR 'a'='b"
-        },
-        {
-          "method": "GET",
-          "path": "/rest/products/search",
-          "parameter": "q",
-          "endpoint_type": "search",
-          "technique": "error_based_sqli",
-          "payload": " OR 'a'='c"
-        },
-        {
-          "method": "GET",
-          "path": "/rest/products/search",
-          "parameter": "q",
-          "endpoint_type": "search",
-          "technique": "error_based_sqli",
-          "payload": " OR 'a'='d"
-        },
-        {
-          "method": "GET",
-          "path": "/rest/products/search",
-          "parameter": "q",
-          "endpoint_type": "search",
-          "technique": "error_based_sqli",
-          "payload": " OR 'a'='e"
-        },
-        {
-          "method": "GET",
-          "path": "/rest/products/search",
-          "parameter": "q",
-          "endpoint_type": "search",
-          "technique": "error_based_sqli",
-          "payload": " OR 'a'='g"
+          "payload": " OR '1'='1"
         },
         {
           "method": "POST",
@@ -123,7 +156,7 @@
           "parameter": "email",
           "endpoint_type": "auth_login",
           "technique": "authentication_bypass",
-          "payload": "' OR '' = '' --"
+          "payload": "' OR 1=1 --"
         }
       ],
       "potential_impacts": [

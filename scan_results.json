@@ -8,8 +8,8 @@
     }
   ],
   "live_endpoint_count": 42,
-  "endpoint_count": 43,
-  "target_count": 6,
+  "endpoint_count": 54,
+  "target_count": 10,
   "endpoints": [
     {
       "method": "GET",
@@ -47,7 +47,13 @@
           "name": "key",
           "in": "query",
           "sources": [
-            "live_scan",
+            "live_scan"
+          ]
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "sources": [
             "observed_endpoints",
             "observed_params",
             "observed_requests"
@@ -108,11 +114,186 @@
     },
     {
       "method": "GET",
+      "path": "/api/Products/1",
+      "url": "http://127.0.0.1:8080/api/Products/1",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "1"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/1 OR 1=1 --",
+      "url": "http://127.0.0.1:8080/api/Products/1 OR 1=1 --",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/123 OR 1=1 --",
+      "url": "http://127.0.0.1:8080/api/Products/123 OR 1=1 --",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/24",
+      "url": "http://127.0.0.1:8080/api/Products/24",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "24"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/24 OR 1=1 --",
+      "url": "http://127.0.0.1:8080/api/Products/24 OR 1=1 --",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/42",
+      "url": "http://127.0.0.1:8080/api/Products/42",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "42"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/42 OR 1=1 --",
+      "url": "http://127.0.0.1:8080/api/Products/42 OR 1=1 --",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/6",
+      "url": "http://127.0.0.1:8080/api/Products/6",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "6"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
       "path": "/api/Quantitys",
       "url": "http://127.0.0.1:8080/api/Quantitys",
       "params": [],
       "sources": [
-        "live_scan"
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
       ]
     },
     {
@@ -158,6 +339,28 @@
       "params": [],
       "sources": [
         "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/admin/application-configuration",
+      "url": "http://127.0.0.1:8080/rest/admin/application-configuration",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/admin/application-version",
+      "url": "http://127.0.0.1:8080/rest/admin/application-version",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
       ]
     },
     {
@@ -257,6 +460,17 @@
       "params": [],
       "sources": [
         "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/languages",
+      "url": "http://127.0.0.1:8080/rest/languages",
+      "params": [],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
       ]
     },
     {
@@ -361,18 +575,12 @@
           "name": "current",
           "in": "query",
           "sources": [
-            "live_scan",
-            "observed_endpoints",
-            "observed_params",
-            "observed_requests"
+            "live_scan"
           ]
         }
       ],
       "sources": [
-        "live_scan",
-        "observed_endpoints",
-        "observed_params",
-        "observed_requests"
+        "live_scan"
       ]
     },
     {
@@ -495,7 +703,13 @@
           "name": "key",
           "in": "query",
           "sources": [
-            "live_scan",
+            "live_scan"
+          ]
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "sources": [
             "observed_endpoints",
             "observed_params",
             "observed_requests"
@@ -504,6 +718,134 @@
       ],
       "sources": [
         "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/1",
+      "url": "http://127.0.0.1:8080/api/Products/1",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "1"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/24",
+      "url": "http://127.0.0.1:8080/api/Products/24",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "24"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/42",
+      "url": "http://127.0.0.1:8080/api/Products/42",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "42"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/6",
+      "url": "http://127.0.0.1:8080/api/Products/6",
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ],
+          "path_index": 2,
+          "original_value": "6"
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
         "observed_endpoints",
         "observed_params",
         "observed_requests"
@@ -539,18 +881,12 @@
           "name": "current",
           "in": "query",
           "sources": [
-            "live_scan",
-            "observed_endpoints",
-            "observed_params",
-            "observed_requests"
+            "live_scan"
           ]
         }
       ],
       "sources": [
-        "live_scan",
-        "observed_endpoints",
-        "observed_params",
-        "observed_requests"
+        "live_scan"
       ]
     },
     {

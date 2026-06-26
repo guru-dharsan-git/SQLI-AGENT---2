@@ -3,6 +3,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from agent.config import DEFAULT_RESULTS_FILE, LLMConfig
+from agent.evidence import (
+    capability_summary,
+    evidence_text,
+    has_login_bypass_signal,
+    has_read_marker_signal,
+    has_sql_error_signal,
+    normalize_attempt_signals,
+)
 from agent.llm_client import LLMClient
 from agent.prompts import report_prompt
 
@@ -15,25 +23,6 @@ REPORT_BODY_SAMPLE_CHARS = 320
 
 def load_json(file_path):
     return json.loads(Path(file_path).read_text(encoding="utf-8"))
-
-
-def normalize_attempt_signals(agent_results):
-    for target in agent_results.get("results", []):
-        for param in target.get("params", []):
-            for attempt in param.get("attempts", []):
-                signal = attempt.get("response_signal") or {}
-                probe = attempt.get("probe") or {}
-
-                if "read_marker_reflected" not in signal:
-                    continue
-
-                signal["read_marker_reflected"] = bool(
-                    signal.get("read_marker_reflected")
-                    and not signal.get("sql_error")
-                    and 200 <= (probe.get("status_code") or 0) < 300
-                )
-
-    return agent_results
 
 
 def trim_text(value, max_chars=REPORT_BODY_SAMPLE_CHARS):
@@ -158,6 +147,22 @@ def markdown_from_report(report):
             f"- Recommendation: {finding.get('recommendation', '')}",
         ])
 
+    not_decidable_targets = report.get("not_decidable_targets", [])
+
+    if not_decidable_targets:
+        lines.extend([
+            "",
+            "## Not Decidable Targets",
+        ])
+
+        for item in not_decidable_targets:
+            lines.extend([
+                "",
+                f"### {item.get('method', '')} {item.get('path', '')}",
+                f"- Parameter: {item.get('parameter', '')}",
+                f"- Reason: {item.get('reason', '')}",
+            ])
+
     capability_summary = report.get("capability_summary", {})
 
     if capability_summary:
@@ -191,163 +196,10 @@ def finding_key(item):
     )
 
 
-def has_sql_error_signal(attempt):
-    probe = attempt.get("probe") or {}
-    body = probe.get("body_sample", "")
-
-    return "SQLITE_ERROR" in body or "SQL syntax" in body
-
-
-def has_login_bypass_signal(attempt):
-    baseline = attempt.get("baseline") or {}
-    probe = attempt.get("probe") or {}
-    body = probe.get("body_sample", "")
-
-    return (
-        baseline.get("status_code") == 401
-        and probe.get("status_code") == 200
-        and "authentication" in body
-    )
-
-
-def has_read_marker_signal(attempt):
-    signal = attempt.get("response_signal") or {}
-    probe = attempt.get("probe") or {}
-
-    return bool(
-        signal.get("read_marker_reflected")
-        and not signal.get("sql_error")
-        and 200 <= (probe.get("status_code") or 0) < 300
-    )
-
-
-def technique_for_attempt(attempt):
-    if has_read_marker_signal(attempt):
-        return "constant_read_confirmation"
-
-    if attempt.get("payload_phase") == "read_confirmation":
-        return ""
-
-    if has_login_bypass_signal(attempt):
-        return "authentication_bypass"
-
-    if has_sql_error_signal(attempt):
-        return "error_based_sqli"
-
-    return ""
-
-
-def capability_summary(agent_results):
-    confirmed = []
-    dbms_hints = set()
-    techniques = set()
-    impacts = set()
-    error_based_read_surfaces = set()
-    confirmed_read_surfaces = set()
-
-    for target in agent_results.get("results", []):
-        endpoint_context = target.get("endpoint_context") or {}
-        endpoint_type = endpoint_context.get("endpoint_type", "")
-
-        for param in target.get("params", []):
-            for attempt in param.get("attempts", []):
-                technique = technique_for_attempt(attempt)
-
-                if not technique:
-                    continue
-
-                signal = attempt.get("response_signal") or {}
-                techniques.add(technique)
-
-                if signal.get("dbms_hint"):
-                    dbms_hints.add(signal["dbms_hint"])
-
-                confirmed.append({
-                    "method": target.get("method", ""),
-                    "path": target.get("path", ""),
-                    "parameter": param.get("name", ""),
-                    "endpoint_type": endpoint_type,
-                    "technique": technique,
-                    "payload": attempt.get("payload", ""),
-                })
-
-                if technique == "authentication_bypass":
-                    impacts.add("authentication logic can be bypassed for the affected endpoint")
-
-                if technique == "error_based_sqli":
-                    impacts.add("database query structure is influenced by user input")
-
-                    if endpoint_type in {"search", "list_filter", "product_collection"}:
-                        error_based_read_surfaces.add(
-                            (
-                                target.get("method", ""),
-                                target.get("path", ""),
-                                param.get("name", ""),
-                            )
-                        )
-
-                if technique == "constant_read_confirmation":
-                    impacts.add("non-sensitive data can be selected through the affected read endpoint")
-                    confirmed_read_surfaces.add(
-                        (
-                            target.get("method", ""),
-                            target.get("path", ""),
-                            param.get("name", ""),
-                        )
-                    )
-
-    unverified = set()
-
-    if error_based_read_surfaces - confirmed_read_surfaces:
-        unverified.add("non-sensitive in-band read confirmation was not proven")
-
-    return {
-        "confirmed_surface_count": len({
-            (
-                item["method"],
-                item["path"],
-                item["parameter"],
-                item["technique"],
-            )
-            for item in confirmed
-        }),
-        "confirmed_techniques": sorted(techniques),
-        "dbms_hints": sorted(dbms_hints),
-        "confirmed_surfaces": confirmed,
-        "potential_impacts": sorted(impacts),
-        "unverified_capabilities": sorted(unverified),
-    }
-
-
-def evidence_from_attempt(attempt):
-    probe = attempt.get("probe") or {}
-    body = probe.get("body_sample", "")
-
-    if has_read_marker_signal(attempt):
-        marker = (attempt.get("response_signal") or {}).get("read_marker", "")
-        return f"Probe response reflected non-sensitive SQL marker `{marker}`."
-
-    if "SQLITE_ERROR" in body:
-        return "Probe response exposed SQLITE_ERROR."
-
-    if "SQL syntax" in body:
-        return "Probe response exposed SQL syntax error."
-
-    if has_login_bypass_signal(attempt):
-        return "Baseline login failed with 401, while probe returned 200 with authentication data."
-
-    decision = attempt.get("llm_decision") or {}
-
-    if decision.get("reason"):
-        return decision["reason"]
-
-    return "Probe evidence indicated SQL injection behavior."
-
-
 def build_finding(target, param, attempt):
     path = target.get("path", "")
     name = param.get("name", "")
-    signal = evidence_from_attempt(attempt)
+    signal = evidence_text(attempt)
 
     return {
         "title": f"SQL Injection in {path}",
@@ -447,6 +299,75 @@ def evidence_findings(agent_results):
                 seen.add(key)
 
     return findings
+
+
+def not_decidable_targets(agent_results):
+    items = []
+    seen = set()
+    finding_keys = {
+        finding_key(finding)
+        for finding in evidence_findings(agent_results)
+    }
+
+    for target in agent_results.get("results", []):
+        for param in target.get("params", []):
+            key = (
+                target.get("method", "").upper(),
+                target.get("path", ""),
+                param.get("name", ""),
+            )
+
+            if key in finding_keys or key in seen:
+                continue
+
+            attempts = param.get("attempts", [])
+            reason = param.get("stop_reason", "")
+
+            if not attempts and not reason:
+                continue
+
+            items.append({
+                "method": target.get("method", ""),
+                "path": target.get("path", ""),
+                "parameter": param.get("name", ""),
+                "reason": reason or "No confirmed SQL injection signal in probes.",
+            })
+            seen.add(key)
+
+    return items
+
+
+def ensure_not_decidable_targets(report, agent_results):
+    existing = {
+        (
+            item.get("method", "").upper(),
+            item.get("path", ""),
+            item.get("parameter", ""),
+        )
+        for item in report.get("not_decidable_targets", [])
+    }
+    additions = []
+
+    for item in not_decidable_targets(agent_results):
+        key = (
+            item.get("method", "").upper(),
+            item.get("path", ""),
+            item.get("parameter", ""),
+        )
+
+        if key in existing:
+            continue
+
+        additions.append(item)
+        existing.add(key)
+
+    if additions:
+        report.setdefault("not_decidable_targets", []).extend(additions)
+        report.setdefault("report_generation", {})["not_decidable_post_processed"] = (
+            "Added locally tested targets that did not have confirmed evidence."
+        )
+
+    return report
 
 
 def keep_only_evidence_supported_findings(report, agent_results):
@@ -563,6 +484,7 @@ def generate_report(
 
     report = ensure_evidence_findings(report, agent_results)
     report = keep_only_evidence_supported_findings(report, agent_results)
+    report = ensure_not_decidable_targets(report, agent_results)
     report["capability_summary"] = capability_summary(agent_results)
     wrapped_report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
