@@ -1,0 +1,142 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/Challenges",
+    "url": "http://127.0.0.1:8080/api/Challenges",
+    "params": [
+      {
+        "name": "key",
+        "in": "query",
+        "sources": [
+          "live_scan",
+          "observed_endpoints",
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "live_scan",
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/rest/products/search",
+    "url": "http://127.0.0.1:8080/rest/products/search",
+    "params": [
+      {
+        "name": "q",
+        "in": "query",
+        "sources": [
+          "observed_endpoints",
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/rest/user/change-password",
+    "url": "http://127.0.0.1:8080/rest/user/change-password",
+    "params": [
+      {
+        "name": "current",
+        "in": "query",
+        "sources": [
+          "live_scan",
+          "observed_endpoints",
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "live_scan",
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/rest/user/login",
+    "url": "http://127.0.0.1:8080/rest/user/login",
+    "params": [
+      {
+        "name": "email",
+        "in": "json",
+        "sources": [
+          "observed_params",
+          "observed_requests"
+        ]
+      },
+      {
+        "name": "password",
+        "in": "json",
+        "sources": [
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/rest/user/security-question",
+    "url": "http://127.0.0.1:8080/rest/user/security-question",
+    "params": [
+      {
+        "name": "email",
+        "in": "query",
+        "sources": [
+          "live_scan",
+          "observed_endpoints",
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "live_scan",
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/rest/user/whoami",
+    "url": "http://127.0.0.1:8080/rest/user/whoami",
+    "params": [
+      {
+        "name": "fields",
+        "in": "query",
+        "sources": [
+          "observed_endpoints",
+          "observed_params",
+          "observed_requests"
+        ]
+      }
+    ],
+    "sources": [
+      "live_scan",
+      "observed_endpoints",
+      "observed_params",
+      "observed_requests"
+    ]
+  }
+]

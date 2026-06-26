@@ -1,0 +1,118 @@
+{
+  "GET /rest/products/search": {
+    "method": "GET",
+    "path": "/rest/products/search",
+    "query_params": [
+      "q"
+    ],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {
+      "q": [
+        "agent_baseline"
+      ]
+    },
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 251
+  },
+  "GET /rest/user/change-password": {
+    "method": "GET",
+    "path": "/rest/user/change-password",
+    "query_params": [
+      "current"
+    ],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {
+      "current": [
+        "agent_baseline"
+      ]
+    },
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 4
+  },
+  "POST /rest/user/login": {
+    "method": "POST",
+    "path": "/rest/user/login",
+    "query_params": [],
+    "form_params": [],
+    "json_body_fields": [
+      "email",
+      "password"
+    ],
+    "cookie_params": [],
+    "important_headers": [
+      "Content-Type"
+    ],
+    "example_query_params": {},
+    "example_form_params": {},
+    "example_json_body": {
+      "email": "agent_baseline",
+      "password": "agent_baseline"
+    },
+    "seen_count": 54
+  },
+  "GET /rest/user/security-question": {
+    "method": "GET",
+    "path": "/rest/user/security-question",
+    "query_params": [
+      "email"
+    ],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {
+      "email": [
+        "agent_baseline"
+      ]
+    },
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 46
+  },
+  "GET /rest/user/whoami": {
+    "method": "GET",
+    "path": "/rest/user/whoami",
+    "query_params": [
+      "fields"
+    ],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {
+      "fields": [
+        "agent_baseline"
+      ]
+    },
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 32
+  },
+  "GET /api/Challenges": {
+    "method": "GET",
+    "path": "/api/Challenges",
+    "query_params": [
+      "key"
+    ],
+    "form_params": [],
+    "json_body_fields": [],
+    "cookie_params": [],
+    "important_headers": [],
+    "example_query_params": {
+      "key": [
+        "agent_baseline"
+      ]
+    },
+    "example_form_params": {},
+    "example_json_body": null,
+    "seen_count": 34
+  }
+}

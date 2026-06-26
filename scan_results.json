@@ -1,0 +1,631 @@
+{
+  "base_url": "http://127.0.0.1:8080",
+  "scan_sources": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "endpoint_count": 42,
+      "status": "ok"
+    }
+  ],
+  "live_endpoint_count": 42,
+  "endpoint_count": 43,
+  "target_count": 6,
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/Addresss",
+      "url": "http://127.0.0.1:8080/api/Addresss",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/BasketItems",
+      "url": "http://127.0.0.1:8080/api/BasketItems",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Cards",
+      "url": "http://127.0.0.1:8080/api/Cards",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Challenges",
+      "url": "http://127.0.0.1:8080/api/Challenges",
+      "params": [
+        {
+          "name": "key",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Complaints",
+      "url": "http://127.0.0.1:8080/api/Complaints",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Deliverys",
+      "url": "http://127.0.0.1:8080/api/Deliverys",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Feedbacks",
+      "url": "http://127.0.0.1:8080/api/Feedbacks",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Hints",
+      "url": "http://127.0.0.1:8080/api/Hints",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Products",
+      "url": "http://127.0.0.1:8080/api/Products",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Quantitys",
+      "url": "http://127.0.0.1:8080/api/Quantitys",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Recycles",
+      "url": "http://127.0.0.1:8080/api/Recycles",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/SecurityAnswers",
+      "url": "http://127.0.0.1:8080/api/SecurityAnswers",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/SecurityQuestions",
+      "url": "http://127.0.0.1:8080/api/SecurityQuestions",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/Users",
+      "url": "http://127.0.0.1:8080/api/Users",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/admin",
+      "url": "http://127.0.0.1:8080/rest/admin",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/captcha",
+      "url": "http://127.0.0.1:8080/rest/captcha",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/chat",
+      "url": "http://127.0.0.1:8080/rest/chat",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code",
+      "url": "http://127.0.0.1:8080/rest/continue-code",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code-findIt",
+      "url": "http://127.0.0.1:8080/rest/continue-code-findIt",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code-findIt/apply",
+      "url": "http://127.0.0.1:8080/rest/continue-code-findIt/apply",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code-fixIt",
+      "url": "http://127.0.0.1:8080/rest/continue-code-fixIt",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code-fixIt/apply",
+      "url": "http://127.0.0.1:8080/rest/continue-code-fixIt/apply",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/continue-code/apply",
+      "url": "http://127.0.0.1:8080/rest/continue-code/apply",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/country-mapping",
+      "url": "http://127.0.0.1:8080/rest/country-mapping",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/deluxe-membership",
+      "url": "http://127.0.0.1:8080/rest/deluxe-membership",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/image-captcha",
+      "url": "http://127.0.0.1:8080/rest/image-captcha",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/memories",
+      "url": "http://127.0.0.1:8080/rest/memories",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/order-history",
+      "url": "http://127.0.0.1:8080/rest/order-history",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products",
+      "url": "http://127.0.0.1:8080/rest/products",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/repeat-notification",
+      "url": "http://127.0.0.1:8080/rest/repeat-notification",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/saveLoginIp",
+      "url": "http://127.0.0.1:8080/rest/saveLoginIp",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/track-order",
+      "url": "http://127.0.0.1:8080/rest/track-order",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user",
+      "url": "http://127.0.0.1:8080/rest/user",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/authentication-details",
+      "url": "http://127.0.0.1:8080/rest/user/authentication-details",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/change-password",
+      "url": "http://127.0.0.1:8080/rest/user/change-password",
+      "params": [
+        {
+          "name": "current",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/login",
+      "url": "http://127.0.0.1:8080/rest/user/login",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/rest/user/login",
+      "url": "http://127.0.0.1:8080/rest/user/login",
+      "params": [
+        {
+          "name": "email",
+          "in": "json",
+          "sources": [
+            "observed_params",
+            "observed_requests"
+          ]
+        },
+        {
+          "name": "password",
+          "in": "json",
+          "sources": [
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/reset-password",
+      "url": "http://127.0.0.1:8080/rest/user/reset-password",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/security-question",
+      "url": "http://127.0.0.1:8080/rest/user/security-question",
+      "params": [
+        {
+          "name": "email",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/whoami",
+      "url": "http://127.0.0.1:8080/rest/user/whoami",
+      "params": [
+        {
+          "name": "fields",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/wallet/balance",
+      "url": "http://127.0.0.1:8080/rest/wallet/balance",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/web3",
+      "url": "http://127.0.0.1:8080/rest/web3",
+      "params": [],
+      "sources": [
+        "live_scan"
+      ]
+    }
+  ],
+  "targets": [
+    {
+      "method": "GET",
+      "path": "/api/Challenges",
+      "url": "http://127.0.0.1:8080/api/Challenges",
+      "params": [
+        {
+          "name": "key",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/products/search",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "params": [
+        {
+          "name": "q",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/change-password",
+      "url": "http://127.0.0.1:8080/rest/user/change-password",
+      "params": [
+        {
+          "name": "current",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/rest/user/login",
+      "url": "http://127.0.0.1:8080/rest/user/login",
+      "params": [
+        {
+          "name": "email",
+          "in": "json",
+          "sources": [
+            "observed_params",
+            "observed_requests"
+          ]
+        },
+        {
+          "name": "password",
+          "in": "json",
+          "sources": [
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/security-question",
+      "url": "http://127.0.0.1:8080/rest/user/security-question",
+      "params": [
+        {
+          "name": "email",
+          "in": "query",
+          "sources": [
+            "live_scan",
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/rest/user/whoami",
+      "url": "http://127.0.0.1:8080/rest/user/whoami",
+      "params": [
+        {
+          "name": "fields",
+          "in": "query",
+          "sources": [
+            "observed_endpoints",
+            "observed_params",
+            "observed_requests"
+          ]
+        }
+      ],
+      "sources": [
+        "live_scan",
+        "observed_endpoints",
+        "observed_params",
+        "observed_requests"
+      ]
+    }
+  ],
+  "warnings": []
+}

